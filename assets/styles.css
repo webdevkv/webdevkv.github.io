@@ -400,6 +400,22 @@ h2 {
     color: #ccc;
 }
 
+#skills ul {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    list-style: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+#skills li {
+    background: var(--sec-bg);
+    padding: 12px;
+    text-align: center;
+    border-radius: 4px;
+}
+
 .section-img {
     max-width: 100%;
     height: auto;
@@ -423,6 +439,9 @@ h2 {
 .profile-img:hover {
     transform: scale(1.2);
     box-shadow: 0 0 30px rgba(106, 13, 173, 0.8), 0 0 60px rgba(0, 0, 255, 0.5)
+}
+#contact p a{
+    color: #b8dfd2;
 }
 
 .contact-form label {
