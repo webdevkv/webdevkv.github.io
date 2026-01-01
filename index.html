@@ -12,9 +12,7 @@
     <div class="container">
       <div class="logo">KV</div>
       <nav class="nav">
-        <a href="#about">About</a>
         <a href="#services">Services</a>
-        <a href="#portfolio">Portfolio</a>
         <a href="#contact">Contact</a>
       </nav>
       <a href="#contact" class="cta-btn">Get in Touch</a>
@@ -59,41 +57,41 @@
 
     <section id="portfolio" class="card">
       <h2>Portfolio</h2>
-      <article class="project">
-        <img class="skeleton" loading="lazy" src="assets/portfolio-detail-hookedbylade.png" alt="Hooked by Lade">
-        <div class="text">
-          <h3><a href="https://hookedbylade.com" target="_blank" rel="noopener">Hooked by Lade</a></h3>
-          <p>Role: Designer & Developer — Platform: Shopify. Custom product pages, checkout optimizations, and responsive theme work.</p>
-        </div>
-      </article>
-
       <div class="project-grid">
-        <div class="project small">
+        <article class="project">
+          <img class="skeleton" loading="lazy" src="assets/portfolio-detail-hookedbylade.png" alt="Hooked by Lade">
+          <div class="text">
+            <h3><a href="https://hookedbylade.com" target="_blank" rel="noopener">Hooked by Lade</a></h3>
+            <p>Role: Designer & Developer — Platform: Shopify. Custom product pages, checkout optimizations, and responsive theme work.</p>
+          </div>
+        </article>
+
+        <div class="project">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-RAG-ai.png" alt="RAG AI Project">
           <div class="text">
-            <h4>RAG AI Project</h4>
-            <p>AI-powered retrieval-augmented generation tool for enhanced content creation and analysis.</p>
+            <h4>Custom RAG AI Project</h4>
+            <p>Retrieval-augmented generation tool for enhanced analysis.</p>
           </div>
         </div>
-        <div class="project small">
+        <div class="project">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-shopify-app.png" alt="Shopify App">
           <div class="text">
-            <h4>Shopify App Prototype</h4>
-            <p>Custom app for Shopify stores with admin UI and webhook integrations.</p>
+            <h4>Shopify App Creation</h4>
+            <p>Custom app for Shopify stores .</p>
           </div>
         </div>
-        <div class="project small">
+        <div class="project">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-skiitown-mobileapp.png" alt="Skiitown Mobile App">
           <div class="text">
             <h4>Skiitown Mobile App</h4>
             <p>Mobile app for ski resort management, built with React Native.</p>
           </div>
         </div>
-        <div class="project small">
+        <div class="project">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-techie-base.png" alt="Techie Base">
           <div class="text">
-            <h4>Techie Base</h4>
-            <p>Tech community platform with forums, resources, and networking features.</p>
+            <h4>Techie Base (WIP)</h4>
+            <p>Online Tech Gadget Store.</p>
           </div>
 +        </div>
       </div>
@@ -150,8 +148,75 @@
     </div>
   </footer>
 
+  <div id="lightbox" class="lightbox">
+    <span class="close">&times;</span>
+    <img class="lightbox-img" id="lightbox-img" src="" alt="">
+    <a class="prev">&#10094;</a>
+    <a class="next">&#10095;</a>
+  </div>
+
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Lightbox functionality
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImg = document.getElementById('lightbox-img');
+    const closeBtn = document.querySelector('.close');
+    const prevBtn = document.querySelector('.prev');
+    const nextBtn = document.querySelector('.next');
+
+    const projects = document.querySelectorAll('.project img');
+    let currentIndex = 0;
+
+    projects.forEach((img, index) => {
+      img.style.cursor = 'pointer';
+      img.addEventListener('click', () => {
+        currentIndex = index;
+        showLightbox();
+      });
+    });
+
+    function showLightbox() {
+      lightboxImg.src = projects[currentIndex].src;
+      lightboxImg.alt = projects[currentIndex].alt;
+      lightbox.style.display = 'block';
+    }
+
+    function closeLightbox() {
+      lightbox.style.display = 'none';
+    }
+
+    function showPrev() {
+      currentIndex = (currentIndex > 0) ? currentIndex - 1 : projects.length - 1;
+      showLightbox();
+    }
+
+    function showNext() {
+      currentIndex = (currentIndex < projects.length - 1) ? currentIndex + 1 : 0;
+      showLightbox();
+    }
+
+    closeBtn.addEventListener('click', closeLightbox);
+    prevBtn.addEventListener('click', showPrev);
+    nextBtn.addEventListener('click', showNext);
+
+    lightbox.addEventListener('click', (e) => {
+      if (e.target === lightbox) {
+        closeLightbox();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (lightbox.style.display === 'block') {
+        if (e.key === 'Escape') {
+          closeLightbox();
+        } else if (e.key === 'ArrowLeft') {
+          showPrev();
+        } else if (e.key === 'ArrowRight') {
+          showNext();
+        }
+      }
+    });
   </script>
 </body>
 </html>
