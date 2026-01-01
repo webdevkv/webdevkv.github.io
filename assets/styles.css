@@ -220,12 +220,12 @@ header .container {
 }
 
 section {
-    padding: 80px 0
+    padding: 96px 0
 }
 
 @media(min-width:1024px) {
     section {
-        padding: 128px 0
+        padding: 144px 0
     }
 }
 
@@ -233,7 +233,7 @@ section {
     background: var(--card-bg);
     padding: 32px;
     border-radius: 12px;
-    margin: 32px 0;
+    margin: 48px 0;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, .1), 0 2px 4px -1px rgba(0, 0, 0, .06);
     border: 1px solid rgba(255, 255, 255, .1);
     transition: opacity .5s, transform .5s
@@ -489,4 +489,144 @@ h2 {
     section {
         padding: 64px 0
     }
+}
+
+.packages {
+    padding: 64px 0;
+}
+
+.packages-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 32px;
+    justify-content: center;
+}
+
+.package-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1 1 300px;
+    max-width: 350px;
+    margin-bottom: 16px;
+}
+
+.package-card .btn {
+    margin-top: 32px;
+}
+
+.price {
+    font-size: 1.5em;
+    color: var(--purple);
+    margin-bottom: 16px;
+}
+
+.package-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.package-card li {
+    margin-bottom: 10px;
+}
+
+.popular {
+    color: var(--blue);
+    font-size: 0.9em;
+}
+
+.maintenance-section {
+    background: var(--sec-bg);
+}
+
+.faq-section {
+    padding: 64px 0;
+}
+
+.faq-item {
+    margin-bottom: 20px;
+}
+
+.faq-question {
+    cursor: pointer;
+    padding: 15px;
+    border: 1px solid var(--sec-bg);
+    border-radius: 5px;
+    background: var(--card-bg);
+    color: var(--fg);
+}
+
+.faq-answer {
+    display: none;
+    padding: 15px;
+    background: var(--sec-bg);
+    border: 1px solid var(--sec-bg);
+    border-top: none;
+    color: var(--fg);
+}
+
+.cta-section {
+    background: var(--purple);
+    color: white;
+    text-align: center;
+    padding: 64px 0;
+}
+
+footer {
+    background: var(--card-bg);
+    color: var(--fg);
+    padding: 20px 0;
+    text-align: center;
+    margin-top: 50px;
+}
+
+footer a {
+    color: var(--fg);
+    text-decoration: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 16px;
+    font-weight: 500;
+}
+
+input, textarea, select {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 4px;
+    background: var(--sec-bg);
+    color: var(--fg);
+    font-size: 16px;
+    font-family: inherit;
+}
+
+input:focus, textarea:focus, select:focus {
+    outline: none;
+    border-color: var(--purple);
+    box-shadow: 0 0 0 2px rgba(106, 13, 173, 0.2);
+}
+
+#project-form form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+@media(min-width:768px) {
+    #project-form form {
+        grid-template-columns: 1fr 1fr;
+    }
+    #project-form textarea {
+        grid-column: span 2;
+    }
+}
+
+blockquote {
+    font-style: italic;
+    border-left: 4px solid var(--purple);
+    padding-left: 16px;
+    margin: 16px 0;
+    color: var(--muted);
 }
