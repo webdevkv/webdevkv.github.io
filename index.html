@@ -8,15 +8,32 @@
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
-  <header class="hero">
+  <header>
     <div class="container">
-      <img class="profile-img skeleton" loading="lazy" src="assets/profile-image.JPG" alt="KV Victor Kolade">
-      <h1 class="name">KV (Victor Kolade)</h1>
-      <p class="tagline">Shopify & Kajabi Expert — Custom Websites, Themes & Funnels</p>
-      <p class="pitch">I build high-converting e‑commerce stores and membership sites that grow your business.</p>
-      <p class="ctas"><a class="btn" href="#portfolio">View My Work</a> <a class="btn ghost" href="#contact">Get in Touch</a></p>
+      <div class="logo">KV</div>
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#vision">Vision</a>
+        <a href="#services">Services</a>
+        <a href="#portfolio">Portfolio</a>
+        <a href="#contact">Contact</a>
+      </nav>
+      <a href="#contact" class="cta-btn">Get in Touch</a>
     </div>
   </header>
+
+  <section class="hero">
+    <div class="container">
+      <img class="profile-img skeleton" loading="lazy" src="assets/profile-image.JPG" alt="KV Victor Kolade">
+      <h1>KV (Victor Kolade)</h1>
+      <p class="tagline">Shopify & Kajabi Expert — Custom Websites, Themes & Funnels</p>
+      <p class="pitch">I build high-converting e‑commerce stores and membership sites that grow your business.</p>
+      <div class="ctas">
+        <a class="btn" href="#portfolio">View My Work</a>
+        <a class="btn ghost" href="#contact">Get in Touch</a>
+      </div>
+    </div>
+  </section>
 
   <main class="container">
     <section id="about" class="card">
@@ -46,31 +63,41 @@
     <section id="portfolio" class="card">
       <h2>Portfolio</h2>
       <article class="project">
-        <h3><a href="https://hookedbylade.com" target="_blank" rel="noopener">Hooked by Lade</a></h3>
-        <p>Role: Designer & Developer — Platform: Shopify. Custom product pages, checkout optimizations, and responsive theme work.</p>
-        <img class="section-img skeleton" loading="lazy" src="assets/portfolio-detail-hookedbylade.png" alt="Hooked by Lade">
+        <img class="skeleton" loading="lazy" src="assets/portfolio-detail-hookedbylade.png" alt="Hooked by Lade">
+        <div class="text">
+          <h3><a href="https://hookedbylade.com" target="_blank" rel="noopener">Hooked by Lade</a></h3>
+          <p>Role: Designer & Developer — Platform: Shopify. Custom product pages, checkout optimizations, and responsive theme work.</p>
+        </div>
       </article>
 
       <div class="project-grid">
         <div class="project small">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-RAG-ai.png" alt="RAG AI Project">
-          <h4>RAG AI Project</h4>
-          <p>AI-powered retrieval-augmented generation tool for enhanced content creation and analysis.</p>
+          <div class="text">
+            <h4>RAG AI Project</h4>
+            <p>AI-powered retrieval-augmented generation tool for enhanced content creation and analysis.</p>
+          </div>
         </div>
         <div class="project small">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-shopify-app.png" alt="Shopify App">
-          <h4>Shopify App Prototype</h4>
-          <p>Custom app for Shopify stores with admin UI and webhook integrations.</p>
+          <div class="text">
+            <h4>Shopify App Prototype</h4>
+            <p>Custom app for Shopify stores with admin UI and webhook integrations.</p>
+          </div>
         </div>
         <div class="project small">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-skiitown-mobileapp.png" alt="Skiitown Mobile App">
-          <h4>Skiitown Mobile App</h4>
-          <p>Mobile app for ski resort management, built with React Native.</p>
+          <div class="text">
+            <h4>Skiitown Mobile App</h4>
+            <p>Mobile app for ski resort management, built with React Native.</p>
+          </div>
         </div>
         <div class="project small">
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-techie-base.png" alt="Techie Base">
-          <h4>Techie Base</h4>
-          <p>Tech community platform with forums, resources, and networking features.</p>
+          <div class="text">
+            <h4>Techie Base</h4>
+            <p>Tech community platform with forums, resources, and networking features.</p>
+          </div>
 +        </div>
       </div>
     </section>
