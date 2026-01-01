@@ -2,9 +2,10 @@
 *{box-sizing:border-box}html,body{height:100%}body{margin:0;font-family:Inter,system-ui,Segoe UI,Roberto,Arial,sans-serif;background:var(--bg);color:#111;line-height:1.5}
 .container{max-width:980px;margin:0 auto;padding:28px}
 .hero{background:linear-gradient(180deg,#ffffff 0%,#f3f6ff 100%);padding:64px 0;text-align:center}
-.name{margin:0;font-size:clamp(28px,5vw,40px)}.tagline{margin:.5rem 0;color:var(--muted)}.pitch{margin:1rem 0 1.5rem}
-.btn{display:inline-block;background:var(--accent);color:#fff;padding:.6rem 1rem;border-radius:8px;text-decoration:none}
-.btn.ghost{background:transparent;color:var(--accent);border:1px solid rgba(11,110,246,.12)}
++.profile-img{width:120px;height:120px;border-radius:50%;object-fit:cover;margin:1rem auto;display:block;border:4px solid #fff;box-shadow:0 4px 12px rgba(0,0,0,.1)}
++.skeleton{background:#e0e0e0;animation:pulse 1.5s ease-in-out infinite}@keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
++.project img{width:100%;height:auto;border-radius:8px;margin-bottom:.5rem;object-fit:cover}
++.section-img{max-width:100%;height:auto;border-radius:8px;margin:1rem 0}
 .card{background:var(--card);padding:22px;border-radius:10px;margin:18px 0;box-shadow:0 6px 18px rgba(14,21,47,0.06)}
 h2{margin-top:0}
 .services{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
