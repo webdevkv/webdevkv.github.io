@@ -84,7 +84,7 @@
           <img class="skeleton" loading="lazy" src="assets/portfolio-detail-skiitown-mobileapp.png" alt="Skiitown Mobile App">
           <div class="text">
             <h4>Skiitown Mobile App</h4>
-            <p>Mobile app for ski resort management, built with React Native.</p>
+            <p>Mobile app for EduTech Platform.</p>
           </div>
         </div>
         <div class="project">
@@ -179,7 +179,9 @@
     function showLightbox() {
       lightboxImg.src = projects[currentIndex].src;
       lightboxImg.alt = projects[currentIndex].alt;
-      lightbox.style.display = 'block';
+      lightbox.style.display = 'flex';
+      lightbox.style.justifyContent = 'center';
+      lightbox.style.alignItems = 'center';
     }
 
     function closeLightbox() {
