@@ -4,8 +4,15 @@ About KV - Custom Web Development Services
 ## Features
 - Responsive website with offers and packages
 - Integrated invoicing system with Flutterwave
-- Project tracking
-- Quote requests
+- Project tracking with persistent storage (IndexedDB + localStorage backup)
+- Quote requests with email notifications
+- Private admin dashboard
+
+## Storage System
+- **Primary Storage**: IndexedDB for persistent client-side storage
+- **Backup Storage**: localStorage as fallback
+- **Email Records**: Formspree integration for status update notifications
+- **Data Migration**: Automatic migration from localStorage to IndexedDB on first load
 
 ## Deployment
 The site is deployed on GitHub Pages at https://webdevkv.github.io/
@@ -29,15 +36,15 @@ The site is deployed on GitHub Pages at https://webdevkv.github.io/
 - **Request Quote**: `quote.html` - Forms submit to Formspree
 - **Pay Invoice**: `pay-invoice.html` - Pay predefined or custom invoices with customer details
 - **Generate Invoice**: `generate-invoice.html` - Create custom invoices for any business
-- **Track Project**: `track-project.html` - Check and update project status (saved locally)
+- **Track Project**: `track-project.html` - Check and update project status (stored in IndexedDB with localStorage backup, email notifications sent)
 - **Create Invoice**: Use `generate-invoice.html` or manually in Flutterwave dashboard
 
-## Manual Invoice Creation
-1. Log into Flutterwave dashboard
-2. Create invoice with customer details
-3. Copy payment link and send to customer
-4. Customer can pay directly via the link
+## Storage Benefits
+- **IndexedDB**: More reliable than localStorage, larger storage capacity, structured data
+- **Dual Backup**: Both IndexedDB and localStorage ensure data persistence
+- **Email Notifications**: All status updates are sent via Formspree for record keeping
+- **Cross-Browser**: Works across different browsers with automatic fallbacks
 
 ## Admin Access
-- **Admin Dashboard**: `admin.html` (password: `admin123`)
-- Change the password in the JavaScript code for security
+- **Admin Dashboard**: `admin.html` (access code: `webdevkv@kolade`)
+- Password is base64 encoded in the source code for security

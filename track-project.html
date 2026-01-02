@@ -79,35 +79,157 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Load project statuses from localStorage or use defaults
-        function loadProjectStatuses() {
-            const saved = localStorage.getItem('projectStatuses');
-            if (saved) {
-                return JSON.parse(saved);
-            }
-            return {
-                'PROJ001': 'In Progress - Design Phase',
-                'PROJ002': 'Completed - Ready for Launch',
-                'PROJ003': 'On Hold - Awaiting Client Feedback',
-                'PROJ004': 'In Progress - Development Phase',
-                'PROJ005': 'Review - Client Approval Needed'
-            };
+        // IndexedDB setup for persistent storage
+        let db;
+        const DB_NAME = 'KVProjectsDB';
+        const DB_VERSION = 1;
+        const STORE_NAME = 'projectStatuses';
+
+        function initDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => {
+                    db = request.result;
+                    resolve(db);
+                };
+
+                request.onupgradeneeded = (event) => {
+                    const db = event.target.result;
+                    if (!db.objectStoreNames.contains(STORE_NAME)) {
+                        db.createObjectStore(STORE_NAME, { keyPath: 'code' });
+                    }
+                };
+            });
         }
 
-        // Save project statuses to localStorage
-        function saveProjectStatuses(statuses) {
+        // Load project statuses from IndexedDB, fallback to localStorage
+        async function loadProjectStatuses() {
+            try {
+                await initDB();
+                const transaction = db.transaction([STORE_NAME], 'readonly');
+                const store = transaction.objectStore(STORE_NAME);
+                const request = store.getAll();
+
+                return new Promise((resolve) => {
+                    request.onsuccess = () => {
+                        const data = request.result;
+                        if (data && data.length > 0) {
+                            const statuses = {};
+                            data.forEach(item => {
+                                statuses[item.code] = item.status;
+                            });
+                            resolve(statuses);
+                        } else {
+                            // Fallback to localStorage or defaults
+                            const saved = localStorage.getItem('projectStatuses');
+                            if (saved) {
+                                const statuses = JSON.parse(saved);
+                                // Migrate to IndexedDB
+                                saveProjectStatuses(statuses);
+                                resolve(statuses);
+                            } else {
+                                resolve({
+                                    'PROJ001': 'In Progress - Design Phase',
+                                    'PROJ002': 'Completed - Ready for Launch',
+                                    'PROJ003': 'On Hold - Awaiting Client Feedback',
+                                    'PROJ004': 'In Progress - Development Phase',
+                                    'PROJ005': 'Review - Client Approval Needed'
+                                });
+                            }
+                        }
+                    };
+                    request.onerror = () => {
+                        // Fallback to localStorage
+                        const saved = localStorage.getItem('projectStatuses');
+                        resolve(saved ? JSON.parse(saved) : {
+                            'PROJ001': 'In Progress - Design Phase',
+                            'PROJ002': 'Completed - Ready for Launch',
+                            'PROJ003': 'On Hold - Awaiting Client Feedback',
+                            'PROJ004': 'In Progress - Development Phase',
+                            'PROJ005': 'Review - Client Approval Needed'
+                        });
+                    };
+                });
+            } catch (error) {
+                console.error('IndexedDB error:', error);
+                // Fallback to localStorage
+                const saved = localStorage.getItem('projectStatuses');
+                return saved ? JSON.parse(saved) : {
+                    'PROJ001': 'In Progress - Design Phase',
+                    'PROJ002': 'Completed - Ready for Launch',
+                    'PROJ003': 'On Hold - Awaiting Client Feedback',
+                    'PROJ004': 'In Progress - Development Phase',
+                    'PROJ005': 'Review - Client Approval Needed'
+                };
+            }
+        }
+
+        // Save project statuses to IndexedDB and localStorage (backup)
+        async function saveProjectStatuses(statuses) {
+            // Save to localStorage as backup
             localStorage.setItem('projectStatuses', JSON.stringify(statuses));
+
+            try {
+                await initDB();
+                const transaction = db.transaction([STORE_NAME], 'readwrite');
+                const store = transaction.objectStore(STORE_NAME);
+
+                // Clear existing data
+                store.clear();
+
+                // Add all statuses
+                Object.entries(statuses).forEach(([code, status]) => {
+                    store.add({ code, status, timestamp: new Date().toISOString() });
+                });
+
+                return new Promise((resolve, reject) => {
+                    transaction.oncomplete = () => resolve();
+                    transaction.onerror = () => reject(transaction.error);
+                });
+            } catch (error) {
+                console.error('IndexedDB save error:', error);
+                // Data is already saved to localStorage
+            }
+        }
+
+        // Send status update via Formspree (for email records)
+        function sendStatusUpdateEmail(code, status, notes = '') {
+            const formData = new FormData();
+            formData.append('project_code', code);
+            formData.append('new_status', status);
+            formData.append('notes', notes);
+            formData.append('timestamp', new Date().toISOString());
+            formData.append('_subject', `Project Status Update: ${code}`);
+
+            // Use the same Formspree endpoint as quotes (you can create a separate one if needed)
+            fetch('https://formspree.io/f/xrebpbvk', {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    console.log('Status update sent to email');
+                } else {
+                    console.error('Failed to send status update email');
+                }
+            }).catch(error => {
+                console.error('Error sending status update:', error);
+            });
         }
 
         // Track project form
-        document.getElementById('track-form').addEventListener('submit', function(e) {
+        document.getElementById('track-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const code = document.getElementById('project-code').value.toUpperCase();
             const statusDiv = document.getElementById('project-status');
             const updateSection = document.getElementById('update-section');
             const updateCodeInput = document.getElementById('update-project-code');
 
-            const projectStatuses = loadProjectStatuses();
+            const projectStatuses = await loadProjectStatuses();
 
             if (projectStatuses[code]) {
                 statusDiv.innerHTML = `<div class="status-card"><h3>Project Status: ${projectStatuses[code]}</h3><p>If you have any questions about your project, please contact us directly.</p></div>`;
@@ -121,7 +243,7 @@
         });
 
         // Update project status form
-        document.getElementById('update-form').addEventListener('submit', function(e) {
+        document.getElementById('update-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const code = document.getElementById('update-project-code').value.toUpperCase();
             const newStatus = document.getElementById('new-status').value;
@@ -133,11 +255,15 @@
                 return;
             }
 
-            const projectStatuses = loadProjectStatuses();
-            projectStatuses[code] = newStatus + (notes ? ' - ' + notes : '');
-            saveProjectStatuses(projectStatuses);
+            const projectStatuses = await loadProjectStatuses();
+            const fullStatus = newStatus + (notes ? ' - ' + notes : '');
+            projectStatuses[code] = fullStatus;
+            await saveProjectStatuses(projectStatuses);
 
-            updateStatusDiv.innerHTML = '<p>Status updated successfully!</p>';
+            // Send email notification
+            sendStatusUpdateEmail(code, fullStatus, notes);
+
+            updateStatusDiv.innerHTML = '<p>Status updated successfully! Email notification sent.</p>';
 
             // Refresh the displayed status
             document.getElementById('track-form').dispatchEvent(new Event('submit'));
