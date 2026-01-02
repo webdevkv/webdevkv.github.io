@@ -252,8 +252,6 @@
                 </form>
                 <div id="project-status"></div>
             </div>
-        </section>
-
     </main>
 
     <footer class="footer">
@@ -262,7 +260,6 @@
         </div>
     </footer>
 
-    <script src="https://checkout.flutterwave.com/v3.js"></script>
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -270,78 +267,6 @@
             const answer = element.nextElementSibling;
             answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
         }
-
-        function showTab(tabName) {
-            const tabs = document.querySelectorAll('.tab-content');
-            tabs.forEach(tab => tab.style.display = 'none');
-            document.getElementById(tabName + '-tab').style.display = 'block';
-        }
-
-        // Project statuses (in a real app, this would be from a database)
-        const projectStatuses = {
-            'PROJ001': 'In Progress - Design Phase',
-            'PROJ002': 'Completed - Ready for Launch',
-            'PROJ003': 'On Hold - Awaiting Client Feedback'
-        };
-
-        document.getElementById('track-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const code = document.getElementById('project-code').value.toUpperCase();
-            const statusDiv = document.getElementById('project-status');
-            if (projectStatuses[code]) {
-                statusDiv.innerHTML = `<p>Status: ${projectStatuses[code]}</p>`;
-            } else {
-                statusDiv.innerHTML = '<p>Project code not found. Please contact support.</p>';
-            }
-        });
-
-        // Payment form (using Flutterwave with static data)
-        document.getElementById('payment-form').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const invoiceNumber = document.getElementById('invoice-number').value;
-            const statusDiv = document.getElementById('payment-status');
-
-            // Static invoice data (in real app, this would be from backend)
-            const invoices = {
-                'INV001': { amount: 450, currency: 'USD', description: 'Basic Website Package' },
-                'INV002': { amount: 850, currency: 'USD', description: 'Standard Website Package' },
-                'INV003': { amount: 1500, currency: 'USD', description: 'Premium Website Package' },
-            };
-
-            const invoice = invoices[invoiceNumber];
-
-            if (!invoice) {
-                statusDiv.innerHTML = '<p>Invoice not found. Please check the number and try again.</p>';
-                return;
-            }
-
-                // Proceed with Flutterwave payment
-                FlutterwaveCheckout({
-                    public_key: "ce351a35-71f4-4897-9242-55b144b51d29",
-                    tx_ref: "invoice-" + invoiceNumber + "-" + Date.now(),
-                    amount: invoice.amount,
-                    currency: invoice.currency,
-                    payment_options: "card,mobilemoney,ussd",
-                    redirect_url: window.location.origin + "/success.html",
-                    customer: {
-                        email: "customer@example.com", // In real app, get from stored data
-                        phone_number: "",
-                        name: "Customer Name",
-                    },
-                    customizations: {
-                        title: "KV Web Development Invoice Payment",
-                        description: invoice.description,
-                    },
-                    callback: function (data) {
-                        console.log(data);
-                        statusDiv.innerHTML = '<p>Payment successful! Transaction ID: ' + data.transaction_id + '</p>';
-                        // Here you can call a function to verify payment
-                    },
-                    onclose: function() {
-                        statusDiv.innerHTML = '<p>Payment cancelled.</p>';
-                    }
-                });
-        });
     </script>
 </body>
 </html>

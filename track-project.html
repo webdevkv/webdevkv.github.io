@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Track Your Project | KV - Custom Websites</title>
+    <meta name="description" content="Check the status of your website project with your unique project code.">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">KV</div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="offers.html">Offers</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <a href="index.html#contact" class="cta-btn">Get in Touch</a>
+    </div>
+  </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Track Your Project</h1>
+            <p>Enter your project code to check the current status and progress of your website development.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="card">
+            <h2>Project Status</h2>
+            <p>Your project code was provided in your welcome email. If you don't have it, please contact us.</p>
+            <form id="track-form">
+                <label>
+                    Project Code *
+                    <input type="text" id="project-code" required placeholder="e.g., PROJ001">
+                </label>
+                <p><button class="btn" type="submit">Check Status</button></p>
+            </form>
+            <div id="project-status"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="year"></span> KV <a href="index.html">Home</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Project statuses (in a real app, this would be from a database)
+        const projectStatuses = {
+            'PROJ001': 'In Progress - Design Phase',
+            'PROJ002': 'Completed - Ready for Launch',
+            'PROJ003': 'On Hold - Awaiting Client Feedback',
+            'PROJ004': 'In Progress - Development Phase',
+            'PROJ005': 'Review - Client Approval Needed'
+        };
+
+        document.getElementById('track-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('project-code').value.toUpperCase();
+            const statusDiv = document.getElementById('project-status');
+            if (projectStatuses[code]) {
+                statusDiv.innerHTML = `<div class="status-card"><h3>Project Status: ${projectStatuses[code]}</h3><p>If you have any questions about your project, please contact us directly.</p></div>`;
+            } else {
+                statusDiv.innerHTML = '<p>Project code not found. Please check your code and try again, or contact support.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

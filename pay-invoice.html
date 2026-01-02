@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pay Invoice | KV - Custom Websites</title>
+    <meta name="description" content="Pay your invoice securely with multiple payment options including cards, mobile money, and bank transfers.">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">KV</div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="offers.html">Offers</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <a href="index.html#contact" class="cta-btn">Get in Touch</a>
+    </div>
+  </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Pay Your Invoice</h1>
+            <p>Secure payment processing with support for cards, mobile money, USSD, and bank transfers worldwide.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="card">
+            <h2>Invoice Payment</h2>
+            <p>Enter your invoice number to proceed with payment. Supported invoice numbers: INV001 ($450), INV002 ($850), INV003 ($1500). For custom invoices, contact us directly.</p>
+            <form id="payment-form">
+                <label>
+                    Invoice Number *
+                    <input type="text" id="invoice-number" required placeholder="e.g., INV001">
+                </label>
+                <p><button class="btn" type="submit">Proceed to Payment</button></p>
+            </form>
+            <div id="payment-status"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="year"></span> KV <a href="index.html">Home</a></p>
+        </div>
+    </footer>
+
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Payment form (using Flutterwave with static data)
+        document.getElementById('payment-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const invoiceNumber = document.getElementById('invoice-number').value;
+            const statusDiv = document.getElementById('payment-status');
+
+            // Static invoice data (in real app, this would be from backend)
+            const invoices = {
+                'INV001': { amount: 450, currency: 'USD', description: 'Basic Website Package' },
+                'INV002': { amount: 850, currency: 'USD', description: 'Standard Website Package' },
+                'INV003': { amount: 1500, currency: 'USD', description: 'Premium Website Package' },
+            };
+
+            const invoice = invoices[invoiceNumber];
+
+            if (!invoice) {
+                statusDiv.innerHTML = '<p>Invoice not found. Please check the number and try again.</p>';
+                return;
+            }
+
+            // Proceed with Flutterwave payment
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-5559bc57e7556a196701d2d7be456d0a-X", 
+                currency: invoice.currency,
+                payment_options: "card,mobilemoney,ussd",
+                redirect_url: window.location.origin + "/success.html",
+                customer: {
+                    email: "customer@example.com", // In real app, get from stored data
+                    phone_number: "",
+                    name: "Customer Name",
+                },
+                customizations: {
+                    title: "KV Web Development Invoice Payment",
+                    description: invoice.description,
+                },
+                callback: function (data) {
+                    console.log(data);
+                    statusDiv.innerHTML = '<p>Payment successful! Transaction ID: ' + data.transaction_id + '</p>';
+                },
+                onclose: function() {
+                    statusDiv.innerHTML = '<p>Payment cancelled.</p>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>

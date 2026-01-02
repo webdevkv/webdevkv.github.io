@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Request a Quote | KV - Custom Websites</title>
+    <meta name="description" content="Get a custom quote for your website project. Tell us about your needs and we'll provide a personalized estimate.">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">KV</div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="offers.html">Offers</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <a href="index.html#contact" class="cta-btn">Get in Touch</a>
+    </div>
+  </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Request a Custom Quote</h1>
+            <p>Tell us about your project and we'll provide a personalized quote within 24 hours.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="card">
+            <h2>Project Details</h2>
+            <form action="https://formspree.io/f/xrebpbvk" method="POST">
+                <input type="hidden" name="request_type" value="quote">
+                <label>
+                    Name *
+                    <input type="text" name="name" required>
+                </label>
+                <label>
+                    Email *
+                    <input type="email" name="email" required>
+                </label>
+                <label>
+                    Phone (Optional)
+                    <input type="tel" name="phone">
+                </label>
+                <label>
+                    Project Type
+                    <select name="project_type">
+                        <option value="">Select Type</option>
+                        <option>Portfolio Website</option>
+                        <option>Business Website</option>
+                        <option>E-commerce Store</option>
+                        <option>Blog</option>
+                        <option>Membership Site</option>
+                        <option>Other</option>
+                    </select>
+                </label>
+                <label>
+                    Budget Range
+                    <select name="budget">
+                        <option value="">Select Range</option>
+                        <option>Under $500</option>
+                        <option>$500 - $1,000</option>
+                        <option>$1,000 - $2,500</option>
+                        <option>$2,500+</option>
+                    </select>
+                </label>
+                <label>
+                    Timeline
+                    <select name="timeline">
+                        <option value="">Select Timeline</option>
+                        <option>ASAP</option>
+                        <option>1-2 weeks</option>
+                        <option>1 month</option>
+                        <option>2-3 months</option>
+                        <option>No rush</option>
+                    </select>
+                </label>
+                <label>
+                    Project Description *
+                    <textarea name="description" rows="6" placeholder="Describe your project in detail. What are your goals? Who is your target audience? Any specific features you need?" required></textarea>
+                </label>
+                <label>
+                    Additional Information
+                    <textarea name="additional" rows="3" placeholder="Any other details, references, or special requirements..."></textarea>
+                </label>
+                <p><button class="btn" type="submit">Send Quote Request</button></p>
+            </form>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="year"></span> KV <a href="index.html">Home</a></p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

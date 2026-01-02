@@ -15,10 +15,18 @@ The site is deployed on GitHub Pages at https://webdevkv.github.io/
 - Client Secret: Used for manual invoice creation in Flutterwave dashboard
 - Encryption Key: For secure API calls
 
+## Pages
+- `index.html` - Homepage
+- `offers.html` - Package offers and contact form
+- `quote.html` - Request custom quotes
+- `pay-invoice.html` - Pay invoices securely
+- `track-project.html` - Check project status
+- `success.html` - Payment success page
+
 ## Invoicing System
-- **Pay Invoice**: Customers can pay using INV001 ($450), INV002 ($850), INV003 ($1500)
-- **Request Quote**: Forms submit to Formspree
-- **Track Project**: Check status with project codes (PROJ001, PROJ002, PROJ003)
+- **Request Quote**: `quote.html` - Forms submit to Formspree
+- **Pay Invoice**: `pay-invoice.html` - Customers can pay using INV001 ($450), INV002 ($850), INV003 ($1500)
+- **Track Project**: `track-project.html` - Check status with project codes (PROJ001, PROJ002, PROJ003, etc.)
 - **Create Invoice**: Manually in Flutterwave dashboard, then share payment links
 
 ## Manual Invoice Creation
