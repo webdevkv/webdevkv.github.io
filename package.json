@@ -1,0 +1,8 @@
+{
+  "name": "webdevkv-site",
+  "version": "1.0.0",
+  "description": "KV Web Development Site with Invoicing",
+  "dependencies": {
+    "axios": "^1.6.0"
+  }
+}
