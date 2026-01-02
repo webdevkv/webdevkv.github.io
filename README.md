@@ -18,6 +18,7 @@ The site is deployed on GitHub Pages at https://webdevkv.github.io/
 ## Pages
 - `index.html` - Homepage
 - `offers.html` - Package offers and contact form (not in navigation)
+- `admin.html` - Private admin dashboard (password protected)
 - `quote.html` - Request custom quotes
 - `pay-invoice.html` - Pay predefined or custom invoices
 - `generate-invoice.html` - Generate custom invoices for any business
@@ -37,7 +38,6 @@ The site is deployed on GitHub Pages at https://webdevkv.github.io/
 3. Copy payment link and send to customer
 4. Customer can pay directly via the link
 
-## Development
-- Edit HTML/CSS/JS files directly
-- Test locally by opening index.html in browser
-- Commit changes to deploy automatically
+## Admin Access
+- **Admin Dashboard**: `admin.html` (password: `admin123`)
+- Change the password in the JavaScript code for security

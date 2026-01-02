@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | KV - Internal Tools</title>
+    <meta name="description" content="Internal admin dashboard for managing website features and tools.">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">KV Admin</div>
+      <nav class="nav">
+        <a href="index.html">Public Site</a>
+        <a href="#logout" onclick="logout()">Logout</a>
+      </nav>
+    </div>
+  </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Admin Dashboard</h1>
+            <p>Manage your website features, invoices, projects, and tools.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <div class="admin-grid">
+            <div class="admin-card">
+                <h3>📝 Quotes</h3>
+                <p>Manage quote requests from clients.</p>
+                <a href="quote.html" class="btn">View Quotes</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>💳 Invoice Payments</h3>
+                <p>Process invoice payments and manage transactions.</p>
+                <a href="pay-invoice.html" class="btn">Pay Invoices</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>📄 Generate Invoices</h3>
+                <p>Create custom invoices for any business.</p>
+                <a href="generate-invoice.html" class="btn">Generate Invoice</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>📊 Project Tracking</h3>
+                <p>Track and update project progress.</p>
+                <a href="track-project.html" class="btn">Track Projects</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>📋 Offers & Packages</h3>
+                <p>View pricing packages and offers.</p>
+                <a href="offers.html" class="btn">View Offers</a>
+            </div>
+
+            <div class="admin-card">
+                <h3>🏠 Public Website</h3>
+                <p>View the main website.</p>
+                <a href="index.html" class="btn">Go to Site</a>
+            </div>
+        </div>
+
+        <section class="card">
+            <h2>Quick Stats</h2>
+            <div class="stats-grid">
+                <div class="stat">
+                    <h4>Active Projects</h4>
+                    <p id="active-projects">Loading...</p>
+                </div>
+                <div class="stat">
+                    <h4>Pending Quotes</h4>
+                    <p id="pending-quotes">Check Formspree</p>
+                </div>
+                <div class="stat">
+                    <h4>Recent Payments</h4>
+                    <p id="recent-payments">Check Flutterwave</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="card">
+            <h2>Project Status Manager</h2>
+            <p>Quickly update project statuses from here.</p>
+            <form id="quick-update-form">
+                <label>
+                    Project Code *
+                    <input type="text" id="quick-project-code" required placeholder="e.g., PROJ001">
+                </label>
+                <label>
+                    New Status *
+                    <select id="quick-new-status" required>
+                        <option value="">Select Status</option>
+                        <option value="In Progress - Design Phase">In Progress - Design Phase</option>
+                        <option value="In Progress - Development Phase">In Progress - Development Phase</option>
+                        <option value="Review - Client Approval Needed">Review - Client Approval Needed</option>
+                        <option value="In Progress - Testing Phase">In Progress - Testing Phase</option>
+                        <option value="Completed - Ready for Launch">Completed - Ready for Launch</option>
+                        <option value="On Hold - Awaiting Client Feedback">On Hold - Awaiting Client Feedback</option>
+                    </select>
+                </label>
+                <p><button class="btn" type="submit">Update Status</button></p>
+            </form>
+            <div id="quick-update-status"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="year"></span> KV Admin Dashboard</p>
+        </div>
+    </footer>
+
+    <script>
+        // Obfuscated password protection
+        const ENCODED_PASSWORD = 'd2ViZGV2a3ZAa29sYWRl'; // Base64 encoded password
+
+        function decodePassword(encoded) {
+            return atob(encoded);
+        }
+
+        function checkAuth() {
+            const isLoggedIn = localStorage.getItem('adminLoggedIn');
+            if (!isLoggedIn) {
+                const input = prompt('Enter access code:');
+                if (input === decodePassword(ENCODED_PASSWORD)) {
+                    localStorage.setItem('adminLoggedIn', 'true');
+                } else {
+                    alert('Access denied');
+                    window.location.href = 'index.html';
+                    return;
+                }
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('adminLoggedIn');
+            window.location.href = 'index.html';
+        }
+
+        // Load project statuses and show stats
+        function loadStats() {
+            const projectStatuses = JSON.parse(localStorage.getItem('projectStatuses') || '{}');
+            const activeProjects = Object.keys(projectStatuses).length;
+            document.getElementById('active-projects').textContent = activeProjects;
+        }
+
+        // Quick update form
+        document.getElementById('quick-update-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('quick-project-code').value.toUpperCase();
+            const newStatus = document.getElementById('quick-new-status').value;
+            const updateStatusDiv = document.getElementById('quick-update-status');
+
+            if (!newStatus) {
+                updateStatusDiv.innerHTML = '<p>Please select a status.</p>';
+                return;
+            }
+
+            const projectStatuses = JSON.parse(localStorage.getItem('projectStatuses') || '{}');
+            projectStatuses[code] = newStatus;
+            localStorage.setItem('projectStatuses', JSON.stringify(projectStatuses));
+
+            updateStatusDiv.innerHTML = '<p>Status updated successfully!</p>';
+            loadStats(); // Refresh stats
+        });
+
+        // Initialize
+        document.getElementById('year').textContent = new Date().getFullYear();
+        checkAuth();
+        loadStats();
+    </script>
+</body>
+</html>
