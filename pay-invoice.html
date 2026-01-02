@@ -13,7 +13,6 @@
       <div class="logo">KV</div>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="offers.html">Offers</a>
         <a href="index.html#contact">Contact</a>
       </nav>
       <a href="index.html#contact" class="cta-btn">Get in Touch</a>
@@ -30,11 +29,46 @@
     <main class="container">
         <section class="card">
             <h2>Invoice Payment</h2>
-            <p>Enter your invoice number to proceed with payment. Supported invoice numbers: INV001 ($450), INV002 ($850), INV003 ($1500). For custom invoices, contact us directly.</p>
+            <p>Enter your invoice details to proceed with payment. You can use predefined invoice numbers (INV001, INV002, INV003) or enter custom invoice details.</p>
             <form id="payment-form">
+                <div style="margin-bottom: 20px;">
+                    <label style="display: block; margin-bottom: 10px;">
+                        <input type="radio" name="invoice-type" value="predefined" checked> Use Predefined Invoice
+                    </label>
+                    <label style="display: block;">
+                        <input type="radio" name="invoice-type" value="custom"> Enter Custom Invoice Details
+                    </label>
+                </div>
+
+                <div id="predefined-section">
+                    <label>
+                        Invoice Number *
+                        <input type="text" id="invoice-number" required placeholder="e.g., INV001">
+                    </label>
+                </div>
+
+                <div id="custom-section" style="display: none;">
+                    <label>
+                        Custom Invoice Number *
+                        <input type="text" id="custom-invoice-number" placeholder="e.g., INV004">
+                    </label>
+                    <label>
+                        Amount (USD) *
+                        <input type="number" id="custom-amount" min="1" step="0.01" placeholder="100.00">
+                    </label>
+                    <label>
+                        Description
+                        <input type="text" id="custom-description" placeholder="Invoice description">
+                    </label>
+                </div>
+
                 <label>
-                    Invoice Number *
-                    <input type="text" id="invoice-number" required placeholder="e.g., INV001">
+                    Your Email *
+                    <input type="email" id="customer-email" required placeholder="your@email.com">
+                </label>
+                <label>
+                    Your Name *
+                    <input type="text" id="customer-name" required placeholder="John Doe">
                 </label>
                 <p><button class="btn" type="submit">Proceed to Payment</button></p>
             </form>
@@ -52,40 +86,88 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
+        // Handle radio button changes
+        document.querySelectorAll('input[name="invoice-type"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const predefinedSection = document.getElementById('predefined-section');
+                const customSection = document.getElementById('custom-section');
+                const invoiceNumberInput = document.getElementById('invoice-number');
+
+                if (this.value === 'predefined') {
+                    predefinedSection.style.display = 'block';
+                    customSection.style.display = 'none';
+                    invoiceNumberInput.required = true;
+                    document.getElementById('custom-invoice-number').required = false;
+                    document.getElementById('custom-amount').required = false;
+                } else {
+                    predefinedSection.style.display = 'none';
+                    customSection.style.display = 'block';
+                    invoiceNumberInput.required = false;
+                    document.getElementById('custom-invoice-number').required = true;
+                    document.getElementById('custom-amount').required = true;
+                }
+            });
+        });
+
         // Payment form (using Flutterwave with static data)
         document.getElementById('payment-form').addEventListener('submit', function(e) {
             e.preventDefault();
-            const invoiceNumber = document.getElementById('invoice-number').value;
+            const invoiceType = document.querySelector('input[name="invoice-type"]:checked').value;
+            const customerEmail = document.getElementById('customer-email').value;
+            const customerName = document.getElementById('customer-name').value;
             const statusDiv = document.getElementById('payment-status');
 
-            // Static invoice data (in real app, this would be from backend)
-            const invoices = {
-                'INV001': { amount: 450, currency: 'USD', description: 'Basic Website Package' },
-                'INV002': { amount: 850, currency: 'USD', description: 'Standard Website Package' },
-                'INV003': { amount: 1500, currency: 'USD', description: 'Premium Website Package' },
-            };
+            let invoiceData;
 
-            const invoice = invoices[invoiceNumber];
+            if (invoiceType === 'predefined') {
+                const invoiceNumber = document.getElementById('invoice-number').value;
 
-            if (!invoice) {
-                statusDiv.innerHTML = '<p>Invoice not found. Please check the number and try again.</p>';
-                return;
+                // Static invoice data (in real app, this would be from backend)
+                const invoices = {
+                    'INV001': { amount: 450, currency: 'USD', description: 'Basic Website Package' },
+                    'INV002': { amount: 850, currency: 'USD', description: 'Standard Website Package' },
+                    'INV003': { amount: 1500, currency: 'USD', description: 'Premium Website Package' },
+                };
+
+                invoiceData = invoices[invoiceNumber];
+
+                if (!invoiceData) {
+                    statusDiv.innerHTML = '<p>Invoice not found. Please check the number and try again.</p>';
+                    return;
+                }
+            } else {
+                // Custom invoice
+                const customInvoiceNumber = document.getElementById('custom-invoice-number').value;
+                const customAmount = parseFloat(document.getElementById('custom-amount').value);
+                const customDescription = document.getElementById('custom-description').value || 'Custom Invoice';
+
+                if (!customInvoiceNumber || customAmount <= 0) {
+                    statusDiv.innerHTML = '<p>Please enter valid custom invoice details.</p>';
+                    return;
+                }
+
+                invoiceData = {
+                    amount: customAmount,
+                    currency: 'USD',
+                    description: customDescription
+                };
             }
 
             // Proceed with Flutterwave payment
             FlutterwaveCheckout({
-                public_key: "FLWPUBK-5559bc57e7556a196701d2d7be456d0a-X", 
-                currency: invoice.currency,
+                public_key: "FLWPUBK-5559bc57e7556a196701d2d7be456d0a-X",
+                tx_ref: "invoice-" + (invoiceType === 'predefined' ? document.getElementById('invoice-number').value : document.getElementById('custom-invoice-number').value) + "-" + Date.now(),
+                amount: String(invoiceData.amount),
+                currency: invoiceData.currency,
                 payment_options: "card,mobilemoney,ussd",
                 redirect_url: window.location.origin + "/success.html",
                 customer: {
-                    email: "customer@example.com", // In real app, get from stored data
-                    phone_number: "",
-                    name: "Customer Name",
+                    email: customerEmail,
+                    name: customerName,
                 },
                 customizations: {
                     title: "KV Web Development Invoice Payment",
-                    description: invoice.description,
+                    description: invoiceData.description,
                 },
                 callback: function (data) {
                     console.log(data);

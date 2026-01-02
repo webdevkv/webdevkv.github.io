@@ -13,7 +13,6 @@
       <div class="logo">KV</div>
       <nav class="nav">
         <a href="index.html">Home</a>
-        <a href="offers.html">Offers</a>
         <a href="index.html#contact">Contact</a>
       </nav>
       <a href="index.html#contact" class="cta-btn">Get in Touch</a>
@@ -40,6 +39,35 @@
             </form>
             <div id="project-status"></div>
         </section>
+
+        <section class="card" id="update-section" style="display: none;">
+            <h2>Update Project Status</h2>
+            <p>Update the progress of your project (for internal use).</p>
+            <form id="update-form">
+                <label>
+                    Project Code *
+                    <input type="text" id="update-project-code" required placeholder="e.g., PROJ001">
+                </label>
+                <label>
+                    New Status *
+                    <select id="new-status" required>
+                        <option value="">Select Status</option>
+                        <option value="In Progress - Design Phase">In Progress - Design Phase</option>
+                        <option value="In Progress - Development Phase">In Progress - Development Phase</option>
+                        <option value="Review - Client Approval Needed">Review - Client Approval Needed</option>
+                        <option value="In Progress - Testing Phase">In Progress - Testing Phase</option>
+                        <option value="Completed - Ready for Launch">Completed - Ready for Launch</option>
+                        <option value="On Hold - Awaiting Client Feedback">On Hold - Awaiting Client Feedback</option>
+                    </select>
+                </label>
+                <label>
+                    Notes (Optional)
+                    <textarea id="status-notes" rows="2" placeholder="Additional notes..."></textarea>
+                </label>
+                <p><button class="btn" type="submit">Update Status</button></p>
+            </form>
+            <div id="update-status"></div>
+        </section>
     </main>
 
     <footer class="footer">
@@ -51,24 +79,68 @@
     <script>
         document.getElementById('year').textContent = new Date().getFullYear();
 
-        // Project statuses (in a real app, this would be from a database)
-        const projectStatuses = {
-            'PROJ001': 'In Progress - Design Phase',
-            'PROJ002': 'Completed - Ready for Launch',
-            'PROJ003': 'On Hold - Awaiting Client Feedback',
-            'PROJ004': 'In Progress - Development Phase',
-            'PROJ005': 'Review - Client Approval Needed'
-        };
+        // Load project statuses from localStorage or use defaults
+        function loadProjectStatuses() {
+            const saved = localStorage.getItem('projectStatuses');
+            if (saved) {
+                return JSON.parse(saved);
+            }
+            return {
+                'PROJ001': 'In Progress - Design Phase',
+                'PROJ002': 'Completed - Ready for Launch',
+                'PROJ003': 'On Hold - Awaiting Client Feedback',
+                'PROJ004': 'In Progress - Development Phase',
+                'PROJ005': 'Review - Client Approval Needed'
+            };
+        }
 
+        // Save project statuses to localStorage
+        function saveProjectStatuses(statuses) {
+            localStorage.setItem('projectStatuses', JSON.stringify(statuses));
+        }
+
+        // Track project form
         document.getElementById('track-form').addEventListener('submit', function(e) {
             e.preventDefault();
             const code = document.getElementById('project-code').value.toUpperCase();
             const statusDiv = document.getElementById('project-status');
+            const updateSection = document.getElementById('update-section');
+            const updateCodeInput = document.getElementById('update-project-code');
+
+            const projectStatuses = loadProjectStatuses();
+
             if (projectStatuses[code]) {
                 statusDiv.innerHTML = `<div class="status-card"><h3>Project Status: ${projectStatuses[code]}</h3><p>If you have any questions about your project, please contact us directly.</p></div>`;
+                // Show update section for project managers
+                updateSection.style.display = 'block';
+                updateCodeInput.value = code;
             } else {
                 statusDiv.innerHTML = '<p>Project code not found. Please check your code and try again, or contact support.</p>';
+                updateSection.style.display = 'none';
             }
+        });
+
+        // Update project status form
+        document.getElementById('update-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const code = document.getElementById('update-project-code').value.toUpperCase();
+            const newStatus = document.getElementById('new-status').value;
+            const notes = document.getElementById('status-notes').value;
+            const updateStatusDiv = document.getElementById('update-status');
+
+            if (!newStatus) {
+                updateStatusDiv.innerHTML = '<p>Please select a status.</p>';
+                return;
+            }
+
+            const projectStatuses = loadProjectStatuses();
+            projectStatuses[code] = newStatus + (notes ? ' - ' + notes : '');
+            saveProjectStatuses(projectStatuses);
+
+            updateStatusDiv.innerHTML = '<p>Status updated successfully!</p>';
+
+            // Refresh the displayed status
+            document.getElementById('track-form').dispatchEvent(new Event('submit'));
         });
     </script>
 </body>

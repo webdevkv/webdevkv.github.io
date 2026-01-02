@@ -17,17 +17,19 @@ The site is deployed on GitHub Pages at https://webdevkv.github.io/
 
 ## Pages
 - `index.html` - Homepage
-- `offers.html` - Package offers and contact form
+- `offers.html` - Package offers and contact form (not in navigation)
 - `quote.html` - Request custom quotes
-- `pay-invoice.html` - Pay invoices securely
-- `track-project.html` - Check project status
+- `pay-invoice.html` - Pay predefined or custom invoices
+- `generate-invoice.html` - Generate custom invoices for any business
+- `track-project.html` - Check and update project status
 - `success.html` - Payment success page
 
 ## Invoicing System
 - **Request Quote**: `quote.html` - Forms submit to Formspree
-- **Pay Invoice**: `pay-invoice.html` - Customers can pay using INV001 ($450), INV002 ($850), INV003 ($1500)
-- **Track Project**: `track-project.html` - Check status with project codes (PROJ001, PROJ002, PROJ003, etc.)
-- **Create Invoice**: Manually in Flutterwave dashboard, then share payment links
+- **Pay Invoice**: `pay-invoice.html` - Pay predefined or custom invoices with customer details
+- **Generate Invoice**: `generate-invoice.html` - Create custom invoices for any business
+- **Track Project**: `track-project.html` - Check and update project status (saved locally)
+- **Create Invoice**: Use `generate-invoice.html` or manually in Flutterwave dashboard
 
 ## Manual Invoice Creation
 1. Log into Flutterwave dashboard

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generate Invoice | KV - Custom Websites</title>
+    <meta name="description" content="Generate custom invoices for any business. Enter details and create payment links instantly.">
+    <link rel="stylesheet" href="assets/styles.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">KV</div>
+      <nav class="nav">
+        <a href="index.html">Home</a>
+        <a href="index.html#contact">Contact</a>
+      </nav>
+      <a href="index.html#contact" class="cta-btn">Get in Touch</a>
+    </div>
+  </header>
+
+    <section class="hero">
+        <div class="container">
+            <h1>Generate Custom Invoice</h1>
+            <p>Create professional invoices for any business. Enter the details and generate a secure payment link.</p>
+        </div>
+    </section>
+
+    <main class="container">
+        <section class="card">
+            <h2>Invoice Details</h2>
+            <form id="generate-form">
+                <label>
+                    Customer Email *
+                    <input type="email" id="customer-email" required placeholder="customer@example.com">
+                </label>
+                <label>
+                    Customer Name *
+                    <input type="text" id="customer-name" required placeholder="John Doe">
+                </label>
+                <label>
+                    Amount (USD) *
+                    <input type="number" id="invoice-amount" required min="1" step="0.01" placeholder="100.00">
+                </label>
+                <label>
+                    Description *
+                    <textarea id="invoice-description" rows="3" required placeholder="Service description..."></textarea>
+                </label>
+                <label>
+                    Business Name (Optional)
+                    <input type="text" id="business-name" placeholder="Your Business Name">
+                </label>
+                <p><button class="btn" type="submit">Generate Invoice & Payment Link</button></p>
+            </form>
+            <div id="generate-status"></div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>© <span id="year"></span> KV <a href="index.html">Home</a></p>
+        </div>
+    </footer>
+
+    <script src="https://checkout.flutterwave.com/v3.js"></script>
+    <script>
+        document.getElementById('year').textContent = new Date().getFullYear();
+
+        // Generate invoice form
+        document.getElementById('generate-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const customerEmail = document.getElementById('customer-email').value;
+            const customerName = document.getElementById('customer-name').value;
+            const amount = parseFloat(document.getElementById('invoice-amount').value);
+            const description = document.getElementById('invoice-description').value;
+            const businessName = document.getElementById('business-name').value;
+            const statusDiv = document.getElementById('generate-status');
+
+            if (amount <= 0) {
+                statusDiv.innerHTML = '<p>Please enter a valid amount greater than 0.</p>';
+                return;
+            }
+
+            // Proceed with Flutterwave payment
+            FlutterwaveCheckout({
+                public_key: "FLWPUBK-5559bc57e7556a196701d2d7be456d0a-X",
+                tx_ref: "custom-invoice-" + Date.now(),
+                amount: String(amount),
+                currency: "USD",
+                payment_options: "card,mobilemoney,ussd",
+                redirect_url: window.location.origin + "/success.html",
+                customer: {
+                    email: customerEmail,
+                    name: customerName,
+                },
+                customizations: {
+                    title: businessName || "Invoice Payment",
+                    description: description,
+                },
+                callback: function (data) {
+                    console.log(data);
+                    statusDiv.innerHTML = '<p>Invoice generated! Payment successful. Transaction ID: ' + data.transaction_id + '</p>';
+                },
+                onclose: function() {
+                    statusDiv.innerHTML = '<p>Invoice generation cancelled.</p>';
+                }
+            });
+        });
+    </script>
+</body>
+</html>
