@@ -8,7 +8,7 @@
     <meta name="keywords" content="web developer, custom website, web design, e-commerce, business website, portfolio site">
     <link rel="stylesheet" href="assets/styles.css">
 </head>
-<body>
+<body class="offers-page">
   <header>
     <div class="container">
       <div class="logo">KV</div>
@@ -50,7 +50,7 @@
                         <li>Social media links</li>
                         <li>Setup, testing + 1 month support</li>
                     </ul>
-                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Basic Website'; document.getElementById('form-title').innerText='Let\'s Get Your Basic Website Project Started';" class="btn">Choose Basic</a>
+                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Basic Website'; document.getElementById('form-title').innerText='Let\'s Get Your Basic Website Project Started'; document.getElementById('project_type').value='Portfolio Website'; document.getElementById('message').value='I\'m interested in the Basic Website package. This seems to fit my needs for a simple portfolio site. (Feel free to change this message or details.)';" class="btn">Choose Basic</a>
                 </div>
                 <!-- Standard Package -->
                 <div class="package-card">
@@ -65,7 +65,7 @@
                         <li>Custom branding and design tweaks</li>
                         <li>Setup, testing + 3 months support/revisions</li>
                     </ul>
-                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Standard Website'; document.getElementById('form-title').innerText='Let\'s Get Your Standard Website Project Started';" class="btn">Choose Standard</a>
+                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Standard Website'; document.getElementById('form-title').innerText='Let\'s Get Your Standard Website Project Started'; document.getElementById('project_type').value='Business Website'; document.getElementById('message').value='I\'m interested in the Standard Website package. It includes everything I need for my business site. (Feel free to change this message or details.)';" class="btn">Choose Standard</a>
                 </div>
                 <!-- Premium Package -->
                 <div class="package-card">
@@ -80,7 +80,7 @@
                         <li>Membership areas or funnels</li>
                         <li>Unlimited revisions + 6 months support</li>
                     </ul>
-                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Premium Website'; document.getElementById('form-title').innerText='Let\'s Get Your Premium Website Project Started';" class="btn">Choose Premium</a>
+                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Premium Website'; document.getElementById('form-title').innerText='Let\'s Get Your Premium Website Project Started'; document.getElementById('project_type').value='E-commerce Store'; document.getElementById('message').value='I\'m interested in the Premium Website package. I need a full e-commerce store. (Feel free to change this message or details.)';" class="btn">Choose Premium</a>
                 </div>
             </div>
         </section>
@@ -98,7 +98,7 @@
                         <li>Security scans and monitoring</li>
                         <li>Priority email support (up to 1 hr changes/mo)</li>
                     </ul>
-                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Basic Maintenance'; document.getElementById('form-title').innerText='Let\'s Set Up Your Basic Maintenance';" class="btn">Include Basic</a>
+                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Basic Maintenance'; document.getElementById('form-title').innerText='Let\'s Set Up Your Basic Maintenance'; document.getElementById('project_type').value='Other'; document.getElementById('message').value='I\'m interested in the Basic Maintenance plan. (Feel free to change this message or details.)';" class="btn">Include Basic</a>
                 </div>
                 <div class="package-card">
                     <h3>Standard Maintenance</h3>
@@ -108,7 +108,7 @@
                         <li>Performance optimization</li>
                         <li>Up to 2 hrs content updates/tweaks/mo</li>
                     </ul>
-                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Standard Maintenance'; document.getElementById('form-title').innerText='Let\'s Set Up Your Standard Maintenance';" class="btn">Include Standard</a>
+                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Standard Maintenance'; document.getElementById('form-title').innerText='Let\'s Set Up Your Standard Maintenance'; document.getElementById('project_type').value='Other'; document.getElementById('message').value='I\'m interested in the Standard Maintenance plan. (Feel free to change this message or details.)';" class="btn">Include Standard</a>
                 </div>
                 <div class="package-card">
                     <h3>Premium Maintenance</h3>
@@ -118,7 +118,7 @@
                         <li>Unlimited small changes</li>
                         <li>Advanced security and monthly reports</li>
                     </ul>
-                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Premium Maintenance'; document.getElementById('form-title').innerText='Let\'s Set Up Your Premium Maintenance';" class="btn">Include Premium</a>
+                    <a href="#project-form" onclick="document.getElementById('selected-package').value='Premium Maintenance'; document.getElementById('form-title').innerText='Let\'s Set Up Your Premium Maintenance'; document.getElementById('project_type').value='Other'; document.getElementById('message').value='I\'m interested in the Premium Maintenance plan. (Feel free to change this message or details.)';" class="btn">Include Premium</a>
                 </div>
             </div>
         </section>
@@ -165,7 +165,7 @@
         <!-- Project Details Form -->
         <section id="project-form" class="card">
             <h2 id="form-title">Let's Get Your Project Started</h2>
-            <p>I'd love to help you with your website. Please share some details below, and I'll get back to you with a personalized plan within 24 hours.</p>
+            <p>I'd love to help you with your website. Please share some details below, and I'll get back to you with a personalized plan within 24 hours. (The form is prefilled based on your selection, but you can edit any details.)</p>
             <form action="https://formspree.io/f/xrebpbvk" method="POST">
                 <input type="hidden" name="selected_package" id="selected-package">
                 <label>
@@ -178,7 +178,7 @@
                 </label>
                 <label>
                     What type of website do you need?
-                    <select name="project_type">
+                    <select name="project_type" id="project_type">
                         <option value="">Select Type</option>
                         <option>Portfolio Website</option>
                         <option>Business Website</option>
@@ -190,7 +190,7 @@
                 </label>
                 <label>
                     Tell me more about your project
-                    <textarea name="message" rows="4"></textarea>
+                    <textarea name="message" id="message" rows="4"></textarea>
                 </label>
                 <p><button class="btn" type="submit">Send Details</button></p>
             </form>
