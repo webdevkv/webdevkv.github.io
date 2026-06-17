@@ -575,13 +575,17 @@ h2 {
     }
 
     header .container {
-        flex-wrap: wrap;
+        flex-direction: column;
         justify-content: center;
+        align-items: stretch;
+        gap: 12px;
         padding: 0 12px;
     }
 
     .logo {
-        left: 12px;
+        position: static;
+        left: auto;
+        margin: 0 auto;
         font-size: 0.95rem;
     }
 
@@ -591,12 +595,17 @@ h2 {
         justify-content: center;
         gap: 12px;
         width: 100%;
-        margin-top: 10px;
+        margin-top: 0;
+    }
+
+    .nav a {
+        padding: 10px 0;
+        width: auto;
     }
 
     .cta-btn {
         position: static;
-        margin-top: 12px;
+        margin-top: 0;
         width: 100%;
         justify-content: center;
     }
