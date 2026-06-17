@@ -603,7 +603,12 @@ h2 {
 
     .hero {
         min-height: auto;
-        padding: 40px 16px 56px;
+        padding: 70px 16px 56px;
+    }
+
+    .hero::before,
+    .hero::after {
+        top: 60%;
     }
 
     .hero h1 {
