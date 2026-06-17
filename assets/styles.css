@@ -570,22 +570,65 @@ h2 {
 }
 
 @media(max-width:767px) {
-    header .nav {
+    header {
+        padding: 12px 0 10px;
+    }
+
+    header .container {
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 0 12px;
+    }
+
+    .logo {
+        left: 12px;
+        font-size: 0.95rem;
+    }
+
+    .nav {
         display: flex;
-        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: center;
         gap: 12px;
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .cta-btn {
+        position: static;
+        margin-top: 12px;
+        width: 100%;
+        justify-content: center;
+    }
+
+    .hero {
+        min-height: auto;
+        padding: 48px 16px 60px;
     }
 
     .hero h1 {
-        font-size: 28px;
+        font-size: 24px;
+        margin-bottom: 14px;
     }
 
-    .hero .tagline {
-        font-size: 18px;
+    .hero .tagline,
+    .hero .pitch {
+        font-size: 15px;
+        margin-bottom: 18px;
+    }
+
+    .hero .hero-trust {
+        gap: 10px;
+        margin-bottom: 22px;
+    }
+
+    .hero .ctas {
+        flex-direction: column;
+        gap: 10px;
     }
 
     section {
-        padding: 64px 0;
+        padding: 56px 0;
     }
 }
 
